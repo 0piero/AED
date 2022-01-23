@@ -36,23 +36,35 @@ void max_heapify_iterative(int *A, int i, int len){
 		int r = 2*i+1;
 		int maior = i;
 	
-		if(l <= len && *(A+l) > *(A+i)){
+		if(l <= len && *(A+l-1) > *(A+i-1)){
 			maior = l;
 		}
 	
-		if(r <= len && *(A+r) > *(A+maior)){
+		if(r <= len && *(A+r-1) > *(A+maior-1)){
 			maior = r;
 		}
 		if(maior != i){
-			int aux = *(A+i);
-			*(A+i) = *(A+maior);
-			*(A+maior) = aux;
+			int aux = *(A+i-1);
+			*(A+i-1) = *(A+maior-1);
+			*(A+maior-1) = aux;
 		}
 	}
 }
-void build_heap(int *A, int len){
+void build_max_heap(int *A, int len){
 	for(int i=len;i>1;i--){
 		max_heapify(A, i/2, len);	
+	}
+
+
+}
+void heapsort(int *A, int len){
+	build_max_heap(A, len);
+	for(int i=len;i>0;i--){
+		int aux = *(A);
+		*(A) = *(A+i-1);
+		*(A+i-1) = aux;
+		len = len - 1;
+		max_heapify(A, 1, len);
 	}
 }
 void main(){
@@ -62,7 +74,7 @@ void main(){
 	for(int i=0;i<n;i++){
 		scanf("%d", (p+i));
 	}
-	build_heap(p, n);
+	heapsort(p, n);
 	for(int i=0;i<n;i++){
 		printf("*%d ", *(p+i));		
 	}
